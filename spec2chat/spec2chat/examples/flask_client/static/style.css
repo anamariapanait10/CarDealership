@@ -1,0 +1,131 @@
+body {
+  margin: 0;
+  background: #e8f5e9;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  justify-content: center;
+  padding-top: 40px;
+}
+
+.chat-wrapper {
+  width: 400px;
+  max-height: 700px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.status-bar {
+  background: #43a047;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.chat-header {
+  background: #388e3c;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.chat-title h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.chat-title p {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.chat-view {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  background: #f1f8e9;
+}
+
+.bot-container,
+.user-container {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.bot-msg,
+.user-msg {
+  padding: 10px 16px;
+  border-radius: 18px;
+  max-width: 80%;
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.bot-container {
+  justify-content: flex-start;
+}
+
+.bot-msg {
+  background: #c8e6c9;
+  color: #2e7d32;
+}
+
+.user-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.user-msg {
+  background-color: #a5d6a7; /* tono diferente al bot */
+  color: #0d3d1c;
+  padding: 10px 16px;
+  border-radius: 18px;
+  max-width: 80%;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.input-section {
+  display: flex;
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  background: #f9fbe7;
+}
+
+#my-text {
+  flex: 1;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  outline: none;
+  background: white;
+}
+
+.send {
+  background: #43a047;
+  border: none;
+  color: white;
+  border-radius: 50%;
+  margin-left: 10px;
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+  cursor: pointer;
+}

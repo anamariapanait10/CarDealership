@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+build/
+dist/
+.eggs/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environments and secrets
+.env
+*.env
+
+# PyPI distributions
+*.whl
+*.tar.gz
+
+# Jupyter / IPython
+.ipynb_checkpoints/
+
+# Mongo dumps or logs
+dump/
+*.log
+
+# Compiled shared libraries
+*.so
+
+# Model and data files
+nltk_data/
+spacy_data/library_test.py

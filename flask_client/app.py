@@ -5,50 +5,19 @@ import os
 from pymongo import MongoClient
 from bson import ObjectId
 from datetime import datetime
+import requests
 from pymongo.errors import PyMongoError
 
 app = Flask(__name__)
 CORS(app)
 DB_NAME = "application_user_data"
+EXTERNAL_API = "http://127.0.0.1:8000"
 @app.route('/')
 def home():
     return render_template('index.html')
 
 def clean_quotes(text):
     return text.strip('"') if text.startswith('"') and text.endswith('"') else text
-
-# @app.route('/database', methods=['GET'])
-# def database_page():
-#     mongo_uri = os.environ.get("MONGO_URI", "mongodb://localhost:27017/")
-#
-#     client = MongoClient(mongo_uri)
-#     db = client[DB_NAME]
-#     collection = db["application_user_data"]
-#
-#     user_id = request.args.get("user_id")  # optional filter: /database?user_id=123
-#
-#     query = {}
-#     if user_id:
-#         query["user_id"] = user_id
-#
-#     docs = list(collection.find(query).sort("updated_at", -1).limit(100))
-#     client.close()
-#
-#     # Make Mongo types display nicely in HTML
-#     def to_jsonable(value):
-#         if isinstance(value, ObjectId):
-#             return str(value)
-#         if isinstance(value, datetime):
-#             return value.isoformat()
-#         if isinstance(value, dict):
-#             return {k: to_jsonable(v) for k, v in value.items()}
-#         if isinstance(value, list):
-#             return [to_jsonable(v) for v in value]
-#         return value
-#
-#     docs = [to_jsonable(d) for d in docs]
-#
-#     return render_template("database.html", docs=docs, user_id=user_id)
 
 @app.route('/database', methods=['GET'])
 def database_page():
@@ -132,53 +101,59 @@ def database_page():
     )
 
 def handle_request(intent, body):
-    import os
-    from datetime import datetime, timezone
-    from pymongo import MongoClient
-    from pymongo.errors import PyMongoError
-
-    mongo_uri = os.environ.get("MONGODB_URI", "mongodb://localhost:27017/")
-    db_name = os.environ.get("MONGO_DB_NAME", DB_NAME)
-
-    client = MongoClient(mongo_uri)
-    db = client[db_name]
-    collection = db[intent]
-
-    user_id = (
-            body.get("user_id")
-            or body.get("email")
-            or body.get("service_id")
-            or body.get("phone")
+    r = requests.post(
+        EXTERNAL_API + "/api/" + intent + '/',
+        json=body
     )
 
-    if not user_id:
-        user_id = f"anonymous:{datetime.now(timezone.utc).isoformat()}"
-
-    now = datetime.now(timezone.utc)
-
-    update_doc = {
-        "$set": {
-            "user_id": user_id,
-            f"intents.{intent}.data": body,
-            f"intents.{intent}.updated_at": now,
-            "updated_at": now,
-        },
-        "$setOnInsert": {
-            "created_at": now,
-        }
-    }
-
-    try:
-        result = collection.update_one(
-            {"user_id": user_id},
-            update_doc,
-            upsert=True
-        )
-
-    except PyMongoError as e:
-        print(f"[MongoDB] Failed to store data for user_id={user_id}, intent={intent}: {e}")
-    finally:
-        client.close()
+    return r
+    # import os
+    # from datetime import datetime, timezone
+    # from pymongo import MongoClient
+    # from pymongo.errors import PyMongoError
+    #
+    # mongo_uri = os.environ.get("MONGODB_URI", "mongodb://localhost:27017/")
+    # db_name = os.environ.get("MONGO_DB_NAME", DB_NAME)
+    #
+    # client = MongoClient(mongo_uri)
+    # db = client[db_name]
+    # collection = db[intent]
+    #
+    # user_id = (
+    #         body.get("user_id")
+    #         or body.get("email")
+    #         or body.get("service_id")
+    #         or body.get("phone")
+    # )
+    #
+    # if not user_id:
+    #     user_id = f"anonymous:{datetime.now(timezone.utc).isoformat()}"
+    #
+    # now = datetime.now(timezone.utc)
+    #
+    # update_doc = {
+    #     "$set": {
+    #         "user_id": user_id,
+    #         f"intents.{intent}.data": body,
+    #         f"intents.{intent}.updated_at": now,
+    #         "updated_at": now,
+    #     },
+    #     "$setOnInsert": {
+    #         "created_at": now,
+    #     }
+    # }
+    #
+    # try:
+    #     result = collection.update_one(
+    #         {"user_id": user_id},
+    #         update_doc,
+    #         upsert=True
+    #     )
+    #
+    # except PyMongoError as e:
+    #     print(f"[MongoDB] Failed to store data for user_id={user_id}, intent={intent}: {e}")
+    # finally:
+    #     client.close()
 
 
 @app.route('/chatbot', methods=['POST'])
@@ -224,7 +199,9 @@ def chatbot():
 
     if "end_of_conversation" in response and response["end_of_conversation"]:
         print(f"S-a terminat conversatia. Intentul a fost {intent} iar datele au fost {response['filledslots']}")
-        handle_request(intent, response['filledslots'])
+        result = handle_request(intent, response['filledslots'])
+        if result.ok:
+            response["external_api_response"] = result.text
 
     return jsonify(response)
 

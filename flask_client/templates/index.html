@@ -324,6 +324,8 @@
             if (data.end_of_conversation) {
                 console.log("FINAL DE CONVERSACIÓN");
                 showFinalMessage("Thank you! The conversation has ended.");
+                if (data.external_api_response != null)
+                    alert(data.external_api_response)
                 resetConversationState();
                 return;
             }
