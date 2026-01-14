@@ -1,0 +1,690 @@
+[
+  {
+    "_id": {
+      "$oid": "a694416b0d73efadf6930718"
+    },
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Car Test Drive Booking API",
+      "description": "Car dealership test-drive booking for IA slot filling",
+      "termsOfService": "http://miapp.com/terms.php",
+      "contact": {
+        "name": "María Jesús Rodríguez",
+        "url": "https://directorio.ugr.es/static/PersonalUGR/*/show/8cbe900fb866f9ac9f399915a132dad3",
+        "email": "mjesusrodriguez@ugr.es"
+      },
+      "license": {
+        "name": "Apache 2.0",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+      },
+      "version": "1.0",
+      "x-domain": "car_dealership"
+    },
+    "servers": [
+      {
+        "url": "http://127.0.0.1:5101",
+        "description": "Server for the app"
+      }
+    ],
+    "tags": [
+      {
+        "name": "testdrive, financing"
+      }
+    ],
+    "paths": {
+      "/scheduletestdrive": {
+        "get": {
+          "description": "Schedule a test drive at the dealership",
+          "operationId": "scheduleTestDrive",
+          "parameters": [
+            {
+              "name": "name",
+              "in": "query",
+              "description": "customer name",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string"
+              },
+              "x-custom-question": "What is the name of the customer scheduling the test drive?"
+            },
+            {
+              "name": "phone",
+              "in": "query",
+              "description": "phone number of the customer.",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string"
+              },
+              "x-custom-question": "Tell me your phone number so we can confirm the test drive, please."
+            },
+            {
+              "name": "date",
+              "in": "query",
+              "description": "Date of the test drive.",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "format": "date"
+              },
+              "x-custom-question": "What day would you like to schedule the test drive?"
+            },
+            {
+              "name": "time",
+              "in": "query",
+              "description": "Time of the test drive.",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string"
+              },
+              "x-custom-question": "What time would you like the test drive?"
+            },
+            {
+              "name": "make",
+              "in": "query",
+              "description": "Vehicle make desired by the user",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "toyota",
+                  "bmw",
+                  "tesla",
+                  "ford",
+                  "hyundai",
+                  "volkswagen"
+                ],
+                "x-value": "toyota"
+              },
+              "x-custom-question": "Which car brand are you interested in?"
+            },
+            {
+              "name": "model",
+              "in": "query",
+              "description": "Vehicle model desired by the user",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "corolla",
+                  "camry",
+                  "x5",
+                  "model 3",
+                  "mustang",
+                  "tucson"
+                ],
+                "x-value": "corolla"
+              },
+              "x-custom-question": "Which model would you like to test drive?"
+            },
+            {
+              "name": "condition",
+              "in": "query",
+              "description": "new, used, or certified pre-owned",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "new",
+                  "used",
+                  "certified pre-owned"
+                ],
+                "x-value": "new"
+              },
+              "x-custom-question": "Do you want to test drive a new, used, or certified pre-owned vehicle?"
+            },
+            {
+              "name": "transmission",
+              "in": "query",
+              "description": "Preferred transmission",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "automatic",
+                  "manual"
+                ],
+                "x-value": "automatic"
+              },
+              "x-custom-question": "Do you prefer automatic or manual transmission?"
+            },
+            {
+              "name": "location",
+              "in": "query",
+              "description": "Preferred dealership location/branch",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "main showroom",
+                  "service lot",
+                  "downtown branch"
+                ],
+                "x-value": "main showroom"
+              },
+              "x-custom-question": "Which branch do you prefer for the appointment?"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "string",
+                    "example": "{\"message\":\"Your test drive is confirmed.\"}"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "url not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "string",
+                    "example": "{\"message\":\"Error: The url or request is not found\"}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {}
+  },
+  {
+    "_id": {
+      "$oid": "93e90a8dba6f41ec947c6bb9"
+    },
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Vehicle Info API",
+      "description": "Vehicle information for IA slot filling",
+      "termsOfService": "http://miapp.com/terms.php",
+      "contact": {
+        "name": "María Jesús Rodríguez",
+        "url": "https://directorio.ugr.es/static/PersonalUGR/*/show/8cbe900fb866f9ac9f399915a132dad3",
+        "email": "mjesusrodriguez@ugr.es"
+      },
+      "license": {
+        "name": "Apache 2.0",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+      },
+      "version": "1.0",
+      "x-domain": "car_dealership"
+    },
+    "servers": [
+      {
+        "url": "http://127.0.0.1:5102",
+        "description": "SwaggerHub API Auto Mocking"
+      }
+    ],
+    "tags": [
+      {
+        "name": "inventory, vehicleinfo"
+      }
+    ],
+    "paths": {
+      "/vehicleinformation": {
+        "get": {
+          "description": "Retrieve general information about vehicles in inventory",
+          "parameters": [
+            {
+              "name": "make",
+              "in": "query",
+              "description": "Vehicle make",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "toyota",
+                  "bmw",
+                  "tesla",
+                  "ford",
+                  "hyundai",
+                  "volkswagen"
+                ]
+              },
+              "x-value": "toyota",
+              "x-custom-question": "Which brand are you interested in?"
+            },
+            {
+              "name": "model",
+              "in": "query",
+              "description": "Vehicle model",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string"
+              },
+              "x-custom-question": "Is there a specific model you want?"
+            },
+            {
+              "name": "budget",
+              "in": "query",
+              "description": "Budget range",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "budget",
+                  "midrange",
+                  "premium"
+                ]
+              },
+              "x-value": "midrange",
+              "x-custom-question": "What budget range are you looking for?"
+            },
+            {
+              "name": "body_type",
+              "in": "query",
+              "description": "Vehicle body type",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "sedan",
+                  "suv",
+                  "hatchback",
+                  "coupe",
+                  "truck",
+                  "van"
+                ]
+              },
+              "x-value": "suv",
+              "x-custom-question": "What body type do you prefer?"
+            },
+            {
+              "name": "fuel_type",
+              "in": "query",
+              "description": "Fuel type",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "gasoline",
+                  "diesel",
+                  "hybrid",
+                  "electric"
+                ]
+              },
+              "x-value": "hybrid",
+              "x-custom-question": "Do you prefer gasoline, diesel, hybrid, or electric?"
+            },
+            {
+              "name": "year",
+              "in": "query",
+              "description": "Model year",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "integer",
+                "minimum": 1990,
+                "maximum": 2026
+              },
+              "x-custom-question": "What model year are you looking for?"
+            },
+            {
+              "name": "mileage",
+              "in": "query",
+              "description": "Maximum mileage (for used vehicles)",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "x-custom-question": "What is the maximum mileage you're comfortable with?"
+            }
+          ]
+        }
+      }
+    },
+    "components": {}
+  },
+  {
+    "_id": {
+      "$oid": "d830f7dabff8fdda103a0483"
+    },
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Dealership Services API",
+      "description": "Financing and trade-in services for IA slot filling",
+      "termsOfService": "http://miapp.com/terms.php",
+      "contact": {
+        "name": "María Jesús Rodríguez",
+        "url": "https://directorio.ugr.es/static/PersonalUGR/*/show/8cbe900fb866f9ac9f399915a132dad3",
+        "email": "mjesusrodriguez@ugr.es"
+      },
+      "license": {
+        "name": "Apache 2.0",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+      },
+      "version": "1.0",
+      "x-domain": "car_dealership"
+    },
+    "servers": [
+      {
+        "url": "http://127.0.0.1:5103",
+        "description": "SwaggerHub API Auto Mocking"
+      }
+    ],
+    "tags": [
+      {
+        "name": "financing, tradein"
+      }
+    ],
+    "paths": {
+      "/applyfinancing": {
+        "post": {
+          "description": "Submit a financing application for a vehicle.",
+          "operationId": "applyFinancing",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "customer_name",
+                    "phone_number",
+                    "employment_status",
+                    "annual_income",
+                    "financing"
+                  ],
+                  "properties": {
+                    "customer_name": {
+                      "type": "string",
+                      "description": "Name of the applicant",
+                      "x-custom-question": "What is your full name for the financing application?"
+                    },
+                    "phone_number": {
+                      "type": "string",
+                      "description": "Phone number for application updates",
+                      "x-custom-question": "What is the best phone number to reach you?"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Email for application updates",
+                      "x-custom-question": "What email should we use for updates?"
+                    },
+                    "employment_status": {
+                      "type": "string",
+                      "description": "Employment status",
+                      "enum": [
+                        "employed",
+                        "self-employed",
+                        "student",
+                        "retired",
+                        "unemployed"
+                      ],
+                      "x-value": "employed",
+                      "x-custom-question": "What is your employment status?"
+                    },
+                    "annual_income": {
+                      "type": "number",
+                      "description": "Approximate annual income",
+                      "minimum": 0,
+                      "x-custom-question": "What is your approximate annual income?"
+                    },
+                    "down_payment": {
+                      "type": "number",
+                      "description": "Desired down payment amount",
+                      "minimum": 0,
+                      "x-custom-question": "How much would you like to put down as a down payment?"
+                    },
+                    "financing": {
+                      "type": "string",
+                      "description": "Purchase method",
+                      "enum": [
+                        "finance",
+                        "lease"
+                      ],
+                      "x-value": "finance",
+                      "x-custom-question": "Are you looking to finance or lease?"
+                    },
+                    "make": {
+                      "type": "string",
+                      "description": "Make of vehicle",
+                      "x-custom-question": "Which vehicle brand is this for?"
+                    },
+                    "model": {
+                      "type": "string",
+                      "description": "Model of vehicle",
+                      "x-custom-question": "Which vehicle model is this for?"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful financing submission.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "application_id": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "estimated_rate": {
+                        "type": "number"
+                      }
+                    },
+                    "example": {
+                      "application_id": "F12345",
+                      "status": "received",
+                      "estimated_rate": 6.49
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid financing request.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "error": "Missing required fields."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/tradeinquote": {
+        "post": {
+          "description": "Request an estimated trade-in quote.",
+          "operationId": "tradeInQuote",
+          "parameters": [
+            {
+              "name": "customer_name",
+              "in": "query",
+              "description": "Name of the customer",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string"
+              },
+              "x-custom-question": "What is your name for the trade-in request?"
+            },
+            {
+              "name": "phone_number",
+              "in": "query",
+              "description": "Phone number for follow-up",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string"
+              },
+              "x-custom-question": "What phone number should we use to contact you?"
+            },
+            {
+              "name": "tradein_make",
+              "in": "query",
+              "description": "Make of your current car",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string"
+              },
+              "x-custom-question": "What is the make of your trade-in vehicle?"
+            },
+            {
+              "name": "tradein_model",
+              "in": "query",
+              "description": "Model of your current car",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string"
+              },
+              "x-custom-question": "What is the model of your trade-in vehicle?"
+            },
+            {
+              "name": "tradein_year",
+              "in": "query",
+              "description": "Year of your current car",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "integer",
+                "minimum": 1990,
+                "maximum": 2026
+              },
+              "x-custom-question": "What year is your trade-in vehicle?"
+            },
+            {
+              "name": "tradein_mileage",
+              "in": "query",
+              "description": "Mileage of your current car",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "x-custom-question": "Approximately how many miles/kilometers are on it?"
+            },
+            {
+              "name": "condition",
+              "in": "query",
+              "description": "Overall condition",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "excellent",
+                  "good",
+                  "fair",
+                  "poor"
+                ],
+                "x-value": "good"
+              },
+              "x-custom-question": "How would you describe the condition: excellent, good, fair, or poor?"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful trade-in quote.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "quote_id": {
+                        "type": "string"
+                      },
+                      "estimated_value": {
+                        "type": "number"
+                      },
+                      "currency": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "quote_id": "T98765",
+                      "estimated_value": 8500,
+                      "currency": "USD"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid trade-in request.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "error": "Invalid mileage."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {}
+  }
+]

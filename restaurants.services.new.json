@@ -1,0 +1,425 @@
+[
+  {
+    "_id": { "$oid": "66f82f082c40c8af3e47ddca" },
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Restaurant Info API",
+      "description": "Restaurant information for IA slot filling",
+      "termsOfService": "http://miapp.com/terms.php",
+      "contact": {
+        "name": "María Jesús Rodríguez",
+        "url": "https://directorio.ugr.es/static/PersonalUGR/*/show/8cbe900fb866f9ac9f399915a132dad3",
+        "email": "mjesusrodriguez@ugr.es"
+      },
+      "license": { "name": "Apache 2.0", "url": "https://www.apache.org/licenses/LICENSE-2.0.html" },
+      "version": "1.0",
+      "x-domain": "restaurants"
+    },
+    "servers": [
+      { "url": "http://127.0.0.1:5002", "description": "SwaggerHub API Auto Mocking" }
+    ],
+    "tags": [{ "name": "vegetarian, petfriendly, smokingzone" }],
+    "paths": {
+      "/bookrestaurant": {
+        "post": {
+          "description": "Make the restaurant reservation",
+          "operationId": "bookRestaurant",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["name", "phone", "smoking", "date", "time", "diners", "pricerange"],
+                  "properties": {
+                    "name": { "type": "string", "description": "customer name", "x-custom-question": "What is the name of the reservation customer?" },
+                    "phone": { "type": "string", "description": "phone number of the customer.", "x-custom-question": "Tell me your phone number in order to confirm the reservation, please." },
+                    "smoking": { "type": "boolean", "description": "smoking zone", "x-custom-question": "do you want to eat in a smoking zone?" },
+                    "date": { "type": "string", "description": "Date of the booking.", "x-custom-question": "What day do you want the reservation for?" },
+                    "time": { "type": "string", "description": "Time of the booking.", "x-custom-question": "What time do you want the reservation for?" },
+                    "diners": { "type": "integer", "description": "people for the booking", "x-custom-question": "For how many diners is the booking?" },
+                    "location": {
+                      "type": "string",
+                      "description": "terrace or salon",
+                      "enum": ["terrace", "salon"],
+                      "x-custom-question": "Which location do you prefer, salon or terrace?"
+                    },
+                    "pricerange": {
+                      "type": "string",
+                      "description": "pricerange desired by the user",
+                      "enum": ["moderate", "expensive", "cheap"],
+                      "x-value": "moderate",
+                      "x-custom-question": "What is the pricerange of the restaurant you are looking for?"
+                    },
+                    "food": {
+                      "type": "string",
+                      "description": "type of food desired by the user",
+                      "enum": [
+                        "afghan","african","afternoon tea","asian oriental","australasian","australian","austrian",
+                        "barbeque","basque","belgian","bistro","brazilian","british","canapes","cantonese","caribbean",
+                        "catalan","chinese","christmas","corsica","creative","crossover","cuban","danish","eastern european",
+                        "english","eritrean","european","french","fusion","gastropub","german","greek","halal","hungarian",
+                        "indian","indonesian","international","irish","italian","jamaican","japanese","korean","kosher",
+                        "latin american","lebanese","light bites","malaysian","mediterranean","mexican","middle eastern",
+                        "modern american","modern eclectic","modern european","modern global","molecular gastronomy","moroccan",
+                        "new zealand","north african","north american","north indian","northern european","panasian","persian",
+                        "polish","polynesian","portuguese","romanian","russian","scandinavian","scottish","seafood",
+                        "singaporean","south african","south indian","spanish","sri lankan","steakhouse","swedish","swiss",
+                        "thai","the americas","traditional","turkish","tuscan","unusual","vegetarian","venetian","vietnamese",
+                        "welsh","world"
+                      ],
+                      "x-value": "vegetarian",
+                      "x-custom-question": "Which is the kind of food you want to eat?"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful request",
+              "content": {
+                "application/json": {
+                  "schema": { "type": "string", "example": "{\"message\":\"The phone number is: 675151146\"}" }
+                }
+              }
+            },
+            "404": {
+              "description": "url not found",
+              "content": {
+                "application/json": {
+                  "schema": { "type": "string", "example": "{\"message\":\"Error: The url or request is not found\"}" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/restaurantinformation": {
+        "get": {
+          "description": "Retrieve general information about restaurants",
+          "parameters": [
+            {
+              "name": "food",
+              "in": "query",
+              "description": "Type of food served at the restaurant",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": { "type": "string", "enum": ["italian","vegetarian","chinese","japanese","indian","french","mexican","thai","spanish"] },
+              "x-value": "italian",
+              "x-custom-question": "What type of food are you looking for at the restaurant?"
+            },
+            {
+              "name": "pricerange",
+              "in": "query",
+              "description": "Price range of the restaurant",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": { "type": "string", "enum": ["cheap","moderate","expensive","luxury"] },
+              "x-value": "expensive",
+              "x-custom-question": "What is the price range you are looking for?"
+            },
+            {
+              "name": "location",
+              "in": "query",
+              "description": "Physical location of the restaurant",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": { "type": "string" },
+              "x-custom-question": "Where is the restaurant located?"
+            },
+            {
+              "name": "rating",
+              "in": "query",
+              "description": "Customer rating of the restaurant (1 to 5 stars)",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": { "type": "integer", "minimum": 1, "maximum": 5 },
+              "x-custom-question": "What rating are you looking for in a restaurant?"
+            },
+            {
+              "name": "opening_hours",
+              "in": "query",
+              "description": "Hours of operation for the restaurant",
+              "required": false,
+              "style": "form",
+              "explode": true,
+              "schema": { "type": "string" },
+              "x-custom-question": "Do you want to know the restaurant's opening hours?"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful request",
+              "content": {
+                "application/json": { "schema": { "type": "object" } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {}
+  },
+
+  {
+    "_id": { "$oid": "661d0cca427c65546b634796" },
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Restaurant Booking API",
+      "description": "Restaurant information for IA slot filling",
+      "termsOfService": "http://miapp.com/terms.php",
+      "contact": {
+        "name": "María Jesús Rodríguez",
+        "url": "https://directorio.ugr.es/static/PersonalUGR/*/show/8cbe900fb866f9ac9f399915a132dad3",
+        "email": "mjesusrodriguez@ugr.es"
+      },
+      "license": { "name": "Apache 2.0", "url": "https://www.apache.org/licenses/LICENSE-2.0.html" },
+      "version": "1.0",
+      "x-domain": "restaurants"
+    },
+    "servers": [{ "url": "http://127.0.0.1:5001", "description": "Server for the app" }],
+    "tags": [{ "name": "terrace, vegetarian" }],
+    "paths": {
+      "/bookrestaurant": {
+        "post": {
+          "description": "Make the restaurant reservation",
+          "operationId": "bookRestaurant",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["name", "phone", "date", "time", "diners", "pricerange", "food"],
+                  "properties": {
+                    "name": { "type": "string", "description": "customer name", "x-custom-question": "What is the name of the reservation customer?" },
+                    "phone": { "type": "string", "description": "phone number of the customer.", "x-custom-question": "Tell me your phone number in order to confirm the reservation, please." },
+                    "date": { "type": "string", "format": "date", "description": "Date of the booking.", "x-custom-question": "What day do you want the reservation for?" },
+                    "time": { "type": "string", "description": "Time of the booking.", "x-custom-question": "What time do you want the reservation for?" },
+                    "diners": { "type": "integer", "description": "people for the booking", "x-custom-question": "For how many diners is the booking?" },
+                    "location": {
+                      "type": "string",
+                      "description": "terrace or salon",
+                      "enum": ["terrace", "salon"],
+                      "x-custom-question": "Which location do you prefer, salon or terrace?"
+                    },
+                    "pricerange": {
+                      "type": "string",
+                      "description": "pricerange desired by the user",
+                      "enum": ["moderate", "expensive", "cheap"],
+                      "x-value": "moderate",
+                      "x-custom-question": "What is the pricerange of the restaurant you are looking for?"
+                    },
+                    "food": {
+                      "type": "string",
+                      "description": "type of food desired by the user",
+                      "enum": [
+                        "afghan","african","afternoon tea","asian oriental","australasian","australian","austrian",
+                        "barbeque","basque","belgian","bistro","brazilian","british","canapes","cantonese","caribbean",
+                        "catalan","chinese","christmas","corsica","creative","crossover","cuban","danish","eastern european",
+                        "english","eritrean","european","french","fusion","gastropub","german","greek","halal","hungarian",
+                        "indian","indonesian","international","irish","italian","jamaican","japanese","korean","kosher",
+                        "latin american","lebanese","light bites","malaysian","mediterranean","mexican","middle eastern",
+                        "modern american","modern eclectic","modern european","modern global","molecular gastronomy","moroccan",
+                        "new zealand","north african","north american","north indian","northern european","panasian","persian",
+                        "polish","polynesian","portuguese","romanian","russian","scandinavian","scottish","seafood",
+                        "singaporean","south african","south indian","spanish","sri lankan","steakhouse","swedish","swiss",
+                        "thai","the americas","traditional","turkish","tuscan","unusual","vegetarian","venetian","vietnamese",
+                        "welsh","world"
+                      ],
+                      "x-value": "vegetarian",
+                      "x-custom-question": "Which is the kind of food you want to eat?"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful request",
+              "content": {
+                "application/json": {
+                  "schema": { "type": "string", "example": "{\"message\":\"The phone number is: 675151146\"}" }
+                }
+              }
+            },
+            "404": {
+              "description": "url not found",
+              "content": {
+                "application/json": {
+                  "schema": { "type": "string", "example": "{\"message\":\"Error: The url or request is not found\"}" }
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "/orderfood": {
+        "post": {
+          "description": "Place an order for food in the restaurant.",
+          "operationId": "orderFood",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["food_items", "payment_method", "customer_name", "phone_number"],
+                  "properties": {
+                    "food_items": { "type": "array", "items": { "type": "string" }, "description": "List of food items to order.", "x-custom-question": "What do you want to order?" },
+                    "special_instructions": { "type": "string", "description": "Any special instructions for the order.", "x-custom-question": "Do you have any special instructions for your order?" },
+                    "payment_method": { "type": "string", "enum": ["cash", "credit card", "debit card", "online payment"], "description": "Preferred payment method", "x-custom-question": "How would you like to pay for your order?" },
+                    "customer_name": { "type": "string", "description": "Name of the customer placing the order", "x-custom-question": "What is the name for the order?" },
+                    "phone_number": { "type": "string", "description": "Phone number for order confirmation", "x-custom-question": "Can I have your phone number to confirm the order?" },
+                    "delivery_address": { "type": "string", "description": "Address for food delivery", "x-custom-question": "Where should we deliver your order?" },
+                    "pricerange": { "type": "string", "enum": ["cheap", "moderate", "expensive"], "description": "Preferred price range for the food order.", "x-value": "moderate", "x-custom-question": "What is your preferred price range for the food?" },
+                    "food": { "type": "string", "enum": ["italian", "vegetarian", "mexican", "chinese", "japanese"], "description": "Type of cuisine you are ordering.", "x-value": "italian", "x-custom-question": "What type of cuisine are you ordering?" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful order placement.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "order_id": { "type": "string" },
+                      "status": { "type": "string" },
+                      "total_price": { "type": "number" },
+                      "order_details": { "type": "array", "items": { "type": "string" } }
+                    },
+                    "example": {
+                      "order_id": "67890",
+                      "status": "confirmed",
+                      "total_price": 42.99,
+                      "order_details": ["1x Spaghetti Carbonara", "2x Margherita Pizza"]
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid order request.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": { "error": { "type": "string" } },
+                    "example": { "error": "Invalid quantity for food items." }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {}
+  },
+
+  {
+    "_id": { "$oid": "66f82f2d2c40c8af3e47ddd3" },
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Restaurant Info API",
+      "description": "Restaurant information for IA slot filling",
+      "termsOfService": "http://miapp.com/terms.php",
+      "contact": {
+        "name": "María Jesús Rodríguez",
+        "url": "https://directorio.ugr.es/static/PersonalUGR/*/show/8cbe900fb866f9ac9f399915a132dad3",
+        "email": "mjesusrodriguez@ugr.es"
+      },
+      "license": { "name": "Apache 2.0", "url": "https://www.apache.org/licenses/LICENSE-2.0.html" },
+      "version": "1.0",
+      "x-domain": "restaurants"
+    },
+    "servers": [
+      { "url": "http://127.0.0.1:5003", "description": "SwaggerHub API Auto Mocking" }
+    ],
+    "tags": [{ "name": "italian, italianfood" }],
+    "paths": {
+      "/bookrestaurant": {
+        "post": {
+          "description": "Returns a booking for the restaurant \"La Mafia\"",
+          "operationId": "restaurantBooking",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["name", "phone", "date", "time", "diners", "pricerange"],
+                  "properties": {
+                    "name": { "type": "string", "description": "customer name", "x-custom-question": "What is the name of the reservation costumer?" },
+                    "phone": { "type": "string", "description": "phone number of the customer.", "x-custom-question": "Tell me your phone number in order to confirm the reservation, please." },
+                    "date": { "type": "string", "description": "Date of the booking.", "x-custom-question": "What day do you want the reservation for?" },
+                    "time": { "type": "string", "description": "Time of the booking.", "x-custom-question": "What time do you want the reservation for?" },
+                    "diners": { "type": "integer", "description": "people for the booking", "x-custom-question": "For how many diners is the booking?" },
+                    "pricerange": {
+                      "type": "string",
+                      "description": "pricerange desired by the user",
+                      "enum": ["moderate", "expensive", "cheap"],
+                      "x-value": "moderate",
+                      "x-custom-question": "What is the pricerange of the restaurant you are looking for?"
+                    },
+                    "food": {
+                      "type": "string",
+                      "description": "type of food desired by the user",
+                      "enum": [
+                        "afghan","african","afternoon tea","asian oriental","australasian","australian","austrian",
+                        "barbeque","basque","belgian","bistro","brazilian","british","canapes","cantonese","caribbean",
+                        "catalan","chinese","christmas","corsica","creative","crossover","cuban","danish","eastern european",
+                        "english","eritrean","european","french","fusion","gastropub","german","greek","halal","hungarian",
+                        "indian","indonesian","international","irish","italian","jamaican","japanese","korean","kosher",
+                        "latin american","lebanese","light bites","malaysian","mediterranean","mexican","middle eastern",
+                        "modern american","modern eclectic","modern european","modern global","molecular gastronomy","moroccan",
+                        "new zealand","north african","north american","north indian","northern european","panasian","persian",
+                        "polish","polynesian","portuguese","romanian","russian","scandinavian","scottish","seafood",
+                        "singaporean","south african","south indian","spanish","sri lankan","steakhouse","swedish","swiss",
+                        "thai","the americas","traditional","turkish","tuscan","unusual","vegetarian","venetian","vietnamese",
+                        "welsh","world"
+                      ],
+                      "x-value": "italian",
+                      "x-custom-question": "Which is the kind of food you want to eat?"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful request",
+              "content": {
+                "application/json": {
+                  "schema": { "type": "string", "example": "{\"message\":\"The phone number is: 675151146\"}" }
+                }
+              }
+            },
+            "404": {
+              "description": "url not found",
+              "content": {
+                "application/json": {
+                  "schema": { "type": "string", "example": "{\"message\":\"Error: The url or request is not found\"}" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {}
+  }
+]

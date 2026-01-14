@@ -1,0 +1,172 @@
+[
+  {
+    "_id": {
+      "$oid": "5a663ced1f798adfebe89321"
+    },
+    "parameter": "budget",
+    "service_frequency": 3,
+    "values": [
+      "premium",
+      "midrange",
+      "budget"
+    ],
+    "user_frequency": 420
+  },
+  {
+    "_id": {
+      "$oid": "3a8be3a28023de0827d86fcb"
+    },
+    "parameter": "make",
+    "service_frequency": 3,
+    "values": [
+      "toyota",
+      "bmw",
+      "tesla",
+      "ford",
+      "hyundai",
+      "volkswagen"
+    ],
+    "user_frequency": 680
+  },
+  {
+    "_id": {
+      "$oid": "204eb8faf164a5c0935d9e3b"
+    },
+    "parameter": "model",
+    "service_frequency": 3,
+    "values": [
+      "corolla",
+      "camry",
+      "x5",
+      "model 3",
+      "mustang",
+      "tucson"
+    ],
+    "user_frequency": 610
+  },
+  {
+    "_id": {
+      "$oid": "95154231c345dbf7fbf6d6b5"
+    },
+    "parameter": "condition",
+    "service_frequency": 2,
+    "values": [
+      "new",
+      "used",
+      "certified pre-owned"
+    ],
+    "user_frequency": 310
+  },
+  {
+    "_id": {
+      "$oid": "a22292f7a218e023e7b03f47"
+    },
+    "parameter": "body_type",
+    "service_frequency": 2,
+    "values": [
+      "sedan",
+      "suv",
+      "hatchback",
+      "coupe",
+      "truck",
+      "van"
+    ],
+    "user_frequency": 255
+  },
+  {
+    "_id": {
+      "$oid": "5ed4f27e3c2bf4c0aec6152a"
+    },
+    "parameter": "fuel_type",
+    "service_frequency": 2,
+    "values": [
+      "gasoline",
+      "diesel",
+      "hybrid",
+      "electric"
+    ],
+    "user_frequency": 190
+  },
+  {
+    "_id": {
+      "$oid": "229b2e8915da43d48b896aaf"
+    },
+    "parameter": "transmission",
+    "service_frequency": 1,
+    "values": [
+      "automatic",
+      "manual"
+    ],
+    "user_frequency": 85
+  },
+  {
+    "_id": {
+      "$oid": "9a3e7bb0f983aba3aa62e34d"
+    },
+    "parameter": "year",
+    "service_frequency": 1,
+    "values": [
+      "2026",
+      "2025",
+      "2024",
+      "2023",
+      "2022",
+      "2021"
+    ],
+    "user_frequency": 130
+  },
+  {
+    "_id": {
+      "$oid": "4f3a9fa8ffa49fb215eed93e"
+    },
+    "parameter": "mileage",
+    "service_frequency": 1,
+    "values": [
+      "under 10,000",
+      "under 50,000",
+      "under 100,000"
+    ],
+    "user_frequency": 120
+  },
+  {
+    "_id": {
+      "$oid": "7b5b446b1ca39401e7bc6d08"
+    },
+    "parameter": "location",
+    "service_frequency": 1,
+    "values": [
+      "city center",
+      "suburbs",
+      "near highway"
+    ],
+    "user_frequency": 75
+  },
+  {
+    "_id": {
+      "$oid": "547e279f033deac1723c8f07"
+    },
+    "parameter": "color",
+    "service_frequency": 1,
+    "values": [
+      "black",
+      "white",
+      "silver",
+      "blue",
+      "red"
+    ],
+    "user_frequency": 60
+  },
+  {
+    "_id": {
+      "$oid": "f626aba0fb90392e111a8dd5"
+    },
+    "parameter": "financing",
+    "service_frequency": 1,
+    "values": [
+      "cash",
+      "lease",
+      "finance"
+    ],
+    "user_frequency": 95
+  }
+]

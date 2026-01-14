@@ -1,0 +1,44 @@
+[
+  {
+    "_id": {
+      "$oid": "129494bfe51ed28437c481fa"
+    },
+    "intent": "ScheduleTestDrive"
+  },
+  {
+    "_id": {
+      "$oid": "23527dd1aa60c42f82e07fb7"
+    },
+    "intent": "VehicleInformation"
+  },
+  {
+    "_id": {
+      "$oid": "3ad1b87bf04933569edd2893"
+    },
+    "intent": "ApplyFinancing"
+  },
+  {
+    "_id": {
+      "$oid": "9fe34639a48e6a77d3f151b0"
+    },
+    "intent": "TradeInQuote"
+  },
+  {
+    "_id": {
+      "$oid": "a8756c9e1cd133628936ff48"
+    },
+    "intent": "reserve_test_drive"
+  },
+  {
+    "_id": {
+      "$oid": "9cd446fecb36e46b358cd018"
+    },
+    "intent": "get_inventory"
+  },
+  {
+    "_id": {
+      "$oid": "33f995912b7cd14487c4f53c"
+    },
+    "intent": "cancel_test_drive"
+  }
+]

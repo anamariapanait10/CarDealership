@@ -1,0 +1,37 @@
+[{
+  "_id": {
+    "$oid": "670982a538c39b7bd1f6241e"
+  },
+  "parameter": "pricerange",
+  "service_frequency": 3,
+  "values": [
+    "expensive",
+    "moderate",
+    "cheap"
+  ],
+  "user_frequency": 12
+},
+{
+  "_id": {
+    "$oid": "670982a538c39b7bd1f62420"
+  },
+  "parameter": "food",
+  "service_frequency": 3,
+  "values": [
+    "vegetarian",
+    "italian"
+  ],
+  "user_frequency": 508
+},
+{
+  "_id": {
+    "$oid": "670ad51c2c40c8af3e47df0b"
+  },
+  "parameter": "location",
+  "service_frequency": 1,
+  "values": [
+    "city center",
+    "shopping center"
+  ],
+  "user_frequency": 47
+}]
