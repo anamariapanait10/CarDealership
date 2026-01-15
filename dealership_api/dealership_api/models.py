@@ -25,3 +25,12 @@ class VehicleInformationRequest(models.Model):
     fuel_type = models.CharField(max_length=120, blank=True)
     year = models.CharField(max_length=15, blank=True)
     mileage = models.CharField(max_length=10, blank=True)
+
+class VehicleInformation(models.Model):
+    make = models.CharField(max_length=60, blank=True)
+    model = models.CharField(max_length=60, blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    fuel_type = models.CharField(max_length=120, blank=True)
+    year = models.CharField(max_length=15, blank=True)
+    mileage = models.CharField(max_length=10, blank=True)
+

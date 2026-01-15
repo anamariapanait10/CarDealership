@@ -1,15 +1,9 @@
-from django.views import View
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from rest_framework import status
-from rest_framework import serializers
-from .models import TestDriveAppointment
-from datetime import datetime
-
-from dealership_api.models import TestDriveAppointment
-from dealership_api.serialiers import TestDriveAppointmentSerializer
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from .models import TestDriveAppointment, VehicleInformation
+from .serialiers import TestDriveAppointmentSerializer, to_text_representation
 from .serialiers import VehicleInformationRequestSerializer
 
 
@@ -34,10 +28,17 @@ class VehicleInformationView(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
         serializer = VehicleInformationRequestSerializer(data=data)
-        if serializer.is_valid():
-            instance = serializer.save()
-            return Response("Successfully submitted request for vehicle information with the following data: " + str(
-                VehicleInformationRequestSerializer(instance).data), status=status.HTTP_201_CREATED)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST);
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        instance = serializer.save()
+        print(data)
+        car = VehicleInformation.objects.filter(make=data["make"], model=data["model"]).first()
+        if not car:
+            return Response("No vehicle found that matches your search criteria.", status=status.HTTP_200_OK)
+
+        print(car)
+        car_text = to_text_representation(car)
+        print(car_text)
+        return Response("We found a car that matches your criteria:\n" + str(car_text), status=status.HTTP_200_OK)
 

@@ -35,18 +35,43 @@ def get_service_questions(service_id: str, intent_name: str, domain: str) -> dic
                     }
                 elif method == "post" and "requestBody" in details:
                     content = details["requestBody"].get("content", {})
-                    for _, schema_def in content.items():
-                        schema_ref = schema_def.get("schema", {}).get("$ref")
+                    for _, media in content.items():
+                        schema = media.get("schema", {}) or {}
+
+                        # 1) $ref schema
+                        schema_ref = schema.get("$ref")
                         if schema_ref:
                             schema_name = schema_ref.split("/")[-1]
-                            schema = document.get("components", {}).get("schemas", {}).get(schema_name, {})
-                            properties = schema.get("properties", {})
-                            slots = extract_questions_from_schema(properties)
-                            intent_info = {
-                                "name": path_intent,
-                                "description": details.get("description", ''),
-                                "questions": {q["name"]: q["question"] for q in slots}
-                            }
+                            schema = (
+                                document.get("components", {})
+                                .get("schemas", {})
+                                .get(schema_name, {})
+                            )
+
+                        if "allOf" in schema and isinstance(schema["allOf"], list):
+                            merged_props = {}
+                            for part in schema["allOf"]:
+                                part_ref = part.get("$ref")
+                                if part_ref:
+                                    part_name = part_ref.split("/")[-1]
+                                    part_schema = (
+                                        document.get("components", {})
+                                        .get("schemas", {})
+                                        .get(part_name, {})
+                                    )
+                                else:
+                                    part_schema = part
+                                merged_props.update(part_schema.get("properties", {}) or {})
+                            properties = merged_props
+                        else:
+                            properties = schema.get("properties", {}) or {}
+
+                        slots = extract_questions_from_schema(properties)
+                        intent_info = {
+                            "name": path_intent,
+                            "description": details.get("description", ''),
+                            "questions": {q["name"]: q["question"] for q in slots}
+                        }
             break
     else:
         raise ValueError("Intent not found in service specification")

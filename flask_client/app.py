@@ -184,7 +184,6 @@ def chatbot():
         service_id=service_id
     )
 
-    # Limpiar comillas innecesarias
     if "chatbot_answer" in response:
         response["chatbot_answer"] = clean_quotes(response["chatbot_answer"])
 
@@ -194,14 +193,14 @@ def chatbot():
             for slot, question in response["questions"].items()
         }
 
-    # Añadir el input original al response (opcional, si lo necesitas en frontend)
     response["userinput"] = user_input
 
     if "end_of_conversation" in response and response["end_of_conversation"]:
         print(f"S-a terminat conversatia. Intentul a fost {intent} iar datele au fost {response['filledslots']}")
         result = handle_request(intent, response['filledslots'])
         if result.ok:
-            response["external_api_response"] = result.text
+            response["external_api_response"] = result.text.replace("\\n", "\n").replace('"', '')
+            print("External API response: ", result.text)
 
     return jsonify(response)
 
