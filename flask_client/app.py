@@ -107,54 +107,6 @@ def handle_request(intent, body):
     )
 
     return r
-    # import os
-    # from datetime import datetime, timezone
-    # from pymongo import MongoClient
-    # from pymongo.errors import PyMongoError
-    #
-    # mongo_uri = os.environ.get("MONGODB_URI", "mongodb://localhost:27017/")
-    # db_name = os.environ.get("MONGO_DB_NAME", DB_NAME)
-    #
-    # client = MongoClient(mongo_uri)
-    # db = client[db_name]
-    # collection = db[intent]
-    #
-    # user_id = (
-    #         body.get("user_id")
-    #         or body.get("email")
-    #         or body.get("service_id")
-    #         or body.get("phone")
-    # )
-    #
-    # if not user_id:
-    #     user_id = f"anonymous:{datetime.now(timezone.utc).isoformat()}"
-    #
-    # now = datetime.now(timezone.utc)
-    #
-    # update_doc = {
-    #     "$set": {
-    #         "user_id": user_id,
-    #         f"intents.{intent}.data": body,
-    #         f"intents.{intent}.updated_at": now,
-    #         "updated_at": now,
-    #     },
-    #     "$setOnInsert": {
-    #         "created_at": now,
-    #     }
-    # }
-    #
-    # try:
-    #     result = collection.update_one(
-    #         {"user_id": user_id},
-    #         update_doc,
-    #         upsert=True
-    #     )
-    #
-    # except PyMongoError as e:
-    #     print(f"[MongoDB] Failed to store data for user_id={user_id}, intent={intent}: {e}")
-    # finally:
-    #     client.close()
-
 
 @app.route('/chatbot', methods=['POST'])
 def chatbot():
