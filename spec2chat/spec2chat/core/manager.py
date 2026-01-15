@@ -37,8 +37,8 @@ def get_top_discriminative_parameters(domain: str) -> list:
 def continue_open_domain_conversation(user_input: str, dialogue_history: list = None) -> str:
     return open_domain_conversation(user_input, dialogue_history)
 
-def analyze_input(user_input: str) -> list:
-    return classify_domain(user_input)
+def analyze_input(user_input: str, possible_domains: list) -> list:
+    return classify_domain(user_input, possible_domains)
 
 def detect_intent(user_input: str, domain: str) -> str:
     return recognize_intent(user_input, domain)

@@ -11,13 +11,13 @@ Created on 17/05/2025 by M. Jesús Rodríguez
 import openai
 from spec2chat.utils.openai_config import configure_openai
 
-def classify_domain(input):
+def classify_domain(input, possible_domains):
     configure_openai()
 
     messages = [
         {
             "role": "user",
-            "content": f'You are a domain classifier in a dialogue system. Classify the following input: "{input}". The input might refer to more than one domain. Return all relevant domains from the following: "car_dealership", "restaurants", "hotels", "attractions", or "out-of-domain" if the input does not fit in any domain. Return the domains as a comma-separated list of words, even if there is only one relevant domain.'        }
+            "content": f'You are a domain classifier in a dialogue system. Classify the following input: "{input}". The input might refer to more than one domain. Return all relevant domains from the following: {possible_domains}, or "out-of-domain" if the input does not fit in any domain. Return the domains as a comma-separated list of words, even if there is only one relevant domain.'        }
     ]
 
     # Crear la solicitud de ChatCompletion

@@ -51,6 +51,7 @@ def detect_open_domain(user_input: str) -> bool:
 
 def run_chatbot(
     user_input: str,
+    possible_domains: list,
     user_answers: list = None,
     tasks: dict = None,
     domain: str = '',
@@ -83,7 +84,7 @@ def run_chatbot(
 
     # Fase 1: Detección de dominios
     if not domain:
-        detected_domains = retrieve_domains(user_input)
+        detected_domains = retrieve_domains(user_input, possible_domains)
         if isinstance(detected_domains, str):
             detected_domains = [detected_domains]
         domain = detected_domains[0] if detected_domains else ''

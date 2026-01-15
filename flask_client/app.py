@@ -181,7 +181,8 @@ def chatbot():
         filledslots=filledslots,
         reqslots=reqslots,
         services=services,
-        service_id=service_id
+        service_id=service_id,
+        possible_domains=["car_dealership"]
     )
 
     if "chatbot_answer" in response:
